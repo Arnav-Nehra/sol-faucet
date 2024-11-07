@@ -1,4 +1,4 @@
-import {Connection, LAMPORTS_PER_SOL,clusterApiUrl, PublicKey} from '@solana/web3.js';
+import {Connection, LAMPORTS_PER_SOL,PublicKey} from '@solana/web3.js';
 //https://solana-devnet.g.alchemy.com/v2/Auo1oJpdtXb-76GN2xZXKzT02GEWZF3W
 
 export function Body() {
@@ -6,7 +6,7 @@ export function Body() {
 
     async function airdrop(publicKey: string, amount: number) {
         try {
-          const airDropSignature = await connection.requestAirdrop(new PublicKey(publicKey), amount).then(()=>alert('Airdrop successful'));
+          await connection.requestAirdrop(new PublicKey(publicKey), amount).then(()=>alert('Airdrop successful'));
         } catch (error:any) {
           alert(error);
         }
