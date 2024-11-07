@@ -13,7 +13,7 @@ export function Body() {
       }
     return (
         
-        <div className="bg-[url('./bg.jpg')]  bg-cover bg-fixed bg-center min-h-screen">
+        <div className="bg-[url('https://cdn.vectorstock.com/i/500p/84/65/abstract-white-monochrome-background-vector-32028465.jpg')]  bg-cover bg-fixed bg-center min-h-screen">
      
             <div className="flex justify-start">
                 <svg
