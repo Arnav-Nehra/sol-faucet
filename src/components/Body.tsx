@@ -1,21 +1,21 @@
-import {Connection, LAMPORTS_PER_SOL,PublicKey} from '@solana/web3.js';
-//https://solana-devnet.g.alchemy.com/v2/Auo1oJpdtXb-76GN2xZXKzT02GEWZF3W
+import { useWallet } from '@solana/wallet-adapter-react';
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { ReactNode } from 'react';
 
-export function Body() {
+export function Body({ children }: { children: ReactNode }) {
     const connection = new Connection("https://api.devnet.solana.com");
-
+    const wallet=useWallet()
     async function airdrop(publicKey: string, amount: number) {
         try {
-          await connection.requestAirdrop(new PublicKey(publicKey), amount).then(()=>alert('Airdrop successful'));
-        } catch (error:any) {
-          alert(error);
+            await connection.requestAirdrop(new PublicKey(publicKey), amount).then(() => alert('Airdrop successful'));
+        } catch (error: any) {
+            alert(error);
         }
-      }
+    }
     return (
-        
-        <div className="bg-[url('https://cdn.vectorstock.com/i/500p/84/65/abstract-white-monochrome-background-vector-32028465.jpg')]  bg-cover bg-fixed bg-center min-h-screen">
-     
-            <div className="flex justify-start">
+        <div>
+            <div className="flex justify-between">
+                <div className='flex'>
                 <svg
                     className="size-12 pt-2 pl-2 pr-2 sm:size-16"
                     viewBox="0 0 24 24"
@@ -29,42 +29,47 @@ export function Body() {
                     ></path>
                 </svg>
                 <h1 className="text-black font-bold text-2xl pt-3.5 sm:text-4xl sm:pt-5">DropSol</h1>
-            </div>
-            <div>
-                
-                            <div>
-                                <div className="text-center text-gray-800 font-mono pt-20 text-xl sm:pt-32 sm:text-3xl">
-                                    <div className="flex justify-center">Fuel Your Ideas</div>
-                                    <div className="pt-4 sm:pt-6">Airdrop Some Solana!!</div>
-                                    <div className="pt-16 sm:pt-20">
-                                        <div className="p-2 w-full sm:w-1/3 inline-block">
-                                            <input type="text" id="default-input" placeholder="Enter your public key" className="bg-gray-300 border-2 hover:border-gray-800 text-gray-900 text-sm rounded-lg block w-full p-2.5 " />
-                                        </div>
-
-                                        <div className="flex-row sm:flex justify-center">
-                                            <div className="p-2">
-                                                <input type="text" id="amount" placeholder="Enter amount" className="bg-gray-300 border-2 hover:border-gray-800 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
-                                            </div>
-                                            <div className="p-2">
-                                                <button onClick={() => {
-                                                    const publicKey = (document.getElementById('default-input') as HTMLInputElement).value;
-                                                    console.log(publicKey)
-                                                    const amount = parseFloat((document.getElementById('amount') as HTMLInputElement).value)*LAMPORTS_PER_SOL;
-                                                    if(publicKey.length === 0 || amount === 0){
-                                                        alert('Please enter a valid public key and amount');
-                                                        return;
-                                                    }else{
-                                                    airdrop(publicKey,amount);}
-                                                }}
-                                                    type="button" className="text-white bg-gradient-to-br  from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-3 text-center me-2 mb-2"> Request Airdrop</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
+                </div>
+                <div className='flex pr-2 pt-4'>
+                {children}
+                </div>
             </div>
             
+            <div>
+                <div>
+                    <div className="text-center text-gray-800 font-mono pt-20 text-xl sm:pt-32 sm:text-3xl">
+                        <div className="flex justify-center">Fuel Your Ideas</div>
+                        <div className="pt-4 sm:pt-6">Airdrop Some Solana!!</div>
+                        <div className="pt-16 sm:pt-20">
+                            <div className="p-2 w-full sm:w-1/3 inline-block">
+                                <input type="text" defaultValue={wallet.publicKey ? wallet.publicKey.toString() : ""} id="default-input" placeholder="Enter your public key" className="bg-gray-300 border-2 hover:border-gray-800 text-gray-900 text-sm rounded-lg block w-full p-2.5 " />
+                            </div>
+
+                            <div className="flex-row sm:flex justify-center">
+                                <div className="p-2">
+                                    <input type="text" id="amount" placeholder="Enter amount" className="bg-gray-300 border-2 hover:border-gray-800 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
+                                </div>
+                                <div className="p-2">
+                                    <button onClick={() => {
+                                        const publicKey = (document.getElementById('default-input') as HTMLInputElement).value;
+                                        console.log(publicKey)
+                                        const amount = parseFloat((document.getElementById('amount') as HTMLInputElement).value) * LAMPORTS_PER_SOL;
+                                        if (publicKey.length === 0 || amount === 0) {
+                                            alert('Please enter a valid public key and amount');
+                                            return;
+                                        } else {
+                                            airdrop(publicKey, amount);
+                                        }
+                                    }}
+                                        type="button" className="text-white bg-gradient-to-br  from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-3 text-center me-2 mb-2"> Request Airdrop</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     );
 }
